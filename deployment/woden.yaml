@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: woden
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: woden
+  template:
+    metadata:
+      labels:
+        app: woden
+    spec:
+      containers:
+      - name: woden
+        image: apdul/woden-storage:latest
+        env:
+        - name: STORAGE_SERVICE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: woden-secrets
+              key: STORAGE_SERVICE_SECRET_KEY
+        - name: STORAGE_SERVICE_DB
+          valueFrom:
+            secretKeyRef:
+              name: woden-secrets
+              key: STORAGE_SERVICE_DB
+        - name: STORAGE_SERVICE_POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: woden-secrets
+              key: STORAGE_SERVICE_POSTGRES_USER
+        - name: STORAGE_SERVICE_POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: woden-secrets
+              key: STORAGE_SERVICE_POSTGRES_PASSWORD
+        - name: GRPC_SERVER_URL
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: GRPC_SERVER_URL
+        - name: REACT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: REACT_URL
+        - name: KAFKA_CONNECT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: KAFKA_CONNECT_URL
+        ports:
+        - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: woden
+spec:
+  type: ClusterIP
+  selector:
+    app: woden
+  ports:
+  - port: 8000
+    targetPort: 8000

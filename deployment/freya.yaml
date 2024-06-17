@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: freya
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: freya
+  template:
+    metadata:
+      labels:
+        app: freya
+    spec:
+      containers:
+      - name: freya
+        image: apdul/freya:latest
+        env:
+        - name: REACT_APP_STORAGE_SERVICE_API_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: freya-config
+              key: REACT_APP_STORAGE_SERVICE_API_BASE_URL
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: freya
+spec:
+  type: ClusterIP
+  selector:
+    app: freya
+  ports:
+  - port: 3000
+    targetPort: 3000

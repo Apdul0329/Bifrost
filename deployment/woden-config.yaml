@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: woden-config
+data:
+  GRPC_SERVER_URL: "heimdall.default.svc.cluster.local:50051"
+  REACT_URL: "http://freya.default.svc.cluster.local"
+  KAFKA_CONNECT_URL: "http://kafka-connect.default.svc.cluster.local"

@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: celery-worker
+  template:
+    metadata:
+      labels:
+        app: celery-worker
+    spec:
+      containers:
+      - name: celery-worker
+        image: apdul/woden-storage:latest
+        command: ["celery", "-A", "your_project", "worker", "--loglevel=info"]
+        env:
+        - name: STORAGE_SERVICE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: woden-secrets
+              key: STORAGE_SERVICE_SECRET_KEY
+        - name: STORAGE_SERVICE_DB
+          valueFrom:
+            secretKeyRef:
+              name: woden-secrets
+              key: STORAGE_SERVICE_DB
+        - name: STORAGE_SERVICE_POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: woden-secrets
+              key: STORAGE_SERVICE_POSTGRES_USER
+        - name: STORAGE_SERVICE_POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: woden-secrets
+              key: STORAGE_SERVICE_POSTGRES_PASSWORD
+        - name: GRPC_SERVER_URL
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: GRPC_SERVER_URL
+        - name: REACT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: REACT_URL
+        - name: KAFKA_CONNECT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: KAFKA_CONNECT_URL
