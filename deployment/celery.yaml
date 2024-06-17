@@ -15,7 +15,7 @@ spec:
       containers:
       - name: celery-worker
         image: apdul/woden-storage:latest
-        command: ["celery", "-A", "your_project", "worker", "--loglevel=info"]
+        command: ["celery", "-A", "storage_service", "worker", "--loglevel=info"]
         env:
         - name: STORAGE_SERVICE_SECRET_KEY
           valueFrom:

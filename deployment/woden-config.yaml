@@ -4,5 +4,11 @@ metadata:
   name: woden-config
 data:
   GRPC_SERVER_URL: "heimdall.default.svc.cluster.local:50051"
-  REACT_URL: "http://freya.default.svc.cluster.local"
+  REACT_URL: "http://freya.default.svc.cluster.local:3000"
   KAFKA_CONNECT_URL: "http://kafka-connect.default.svc.cluster.local"
+  REDIS_HOST: "redis.default.svc.cluster.local"
+  REDIS_PORT: "6379"
+  ALLOWED_HOSTS: "woden.default.svc.cluster.local,127.0.0.1,localhost" 
+  STORAGE_SERVICE_DB_HOST: "postgres.default.svc.cluster.local"
+  CORS_ALLOWED_ORIGINS: "http://freya.default.svc.cluster.local:3000,http://localhost:3000,*"
+  CSRF_TRUSTED_ORIGINS: "http://freya.default.svc.cluster.local:3000,http://localhost:3000,*"

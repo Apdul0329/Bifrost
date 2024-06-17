@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-mysql
+spec:
+  selector:
+    matchLabels:
+      app: test-mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: test-mysql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: test-mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: test-mysql-root
+        ports:
+        - containerPort: 3306
+          name: test-mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-mysql-service
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: test-mysql

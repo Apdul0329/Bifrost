@@ -12,6 +12,66 @@ spec:
       labels:
         app: woden
     spec:
+      initContainers:
+      - name: migrate
+        image: apdul/woden-storage:latest
+        command: ["python", "manage.py", "migrate"]
+        env:
+        - name: STORAGE_SERVICE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: woden-secrets
+              key: STORAGE_SERVICE_SECRET_KEY
+        - name: STORAGE_SERVICE_DB
+          valueFrom:
+            secretKeyRef:
+              name: woden-secrets
+              key: STORAGE_SERVICE_DB
+        - name: STORAGE_SERVICE_POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: woden-secrets
+              key: STORAGE_SERVICE_POSTGRES_USER
+        - name: STORAGE_SERVICE_POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: woden-secrets
+              key: STORAGE_SERVICE_POSTGRES_PASSWORD
+        - name: GRPC_SERVER_URL
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: GRPC_SERVER_URL
+        - name: REACT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: REACT_URL
+        - name: KAFKA_CONNECT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: KAFKA_CONNECT_URL
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: REDIS_HOST
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: REDIS_PORT
+        - name: ALLOWED_HOSTS
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: ALLOWED_HOSTS
+        - name: STORAGE_SERVICE_DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: STORAGE_SERVICE_DB_HOST
       containers:
       - name: woden
         image: apdul/woden-storage:latest
@@ -51,6 +111,36 @@ spec:
             configMapKeyRef:
               name: woden-config
               key: KAFKA_CONNECT_URL
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: REDIS_HOST
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: REDIS_PORT
+        - name: ALLOWED_HOSTS
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: ALLOWED_HOSTS
+        - name: STORAGE_SERVICE_DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: STORAGE_SERVICE_DB_HOST
+        - name: CORS_ALLOWED_ORIGINS
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: CORS_ALLOWED_ORIGINS
+        - name: CSRF_TRUSTED_ORIGINS
+          valueFrom:
+            configMapKeyRef:
+              name: woden-config
+              key: CSRF_TRUSTED_ORIGINS
         ports:
         - containerPort: 8000
 ---

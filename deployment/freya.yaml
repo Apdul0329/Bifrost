@@ -29,9 +29,9 @@ kind: Service
 metadata:
   name: freya
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: freya
   ports:
-  - port: 3000
-    targetPort: 3000
+    - port: 80
+      targetPort: 3000

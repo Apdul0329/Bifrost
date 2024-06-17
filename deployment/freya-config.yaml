@@ -3,5 +3,4 @@ kind: ConfigMap
 metadata:
   name: freya-config
 data:
-  REACT_APP_STORAGE_SERVICE_API_BASE_URL: "http://woden.default.svc.cluster.local"
-
+  REACT_APP_STORAGE_SERVICE_API_BASE_URL: "http://woden.default.svc.cluster.local:8000"

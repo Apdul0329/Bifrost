@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-postgres
+spec:
+  selector:
+    matchLabels:
+      app: test-postgres
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: test-postgres
+    spec:
+      containers:
+        - name: test-postgres
+          image: postgres:13
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5433
+          env:
+          - name: TZ
+            value: 'Asia/Seoul'
+          - name: POSTGRES_USER
+            value: test-postgres
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: test-postgres-secret
+                key: POSTGRES_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-postgres-service
+  labels:
+    app: test-postgres
+spec:
+  type: ClusterIP
+  ports:
+   - port: 5433
+  selector:
+   app: test-postgres
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-postgres-secret
+type: Opaque
+data:
+  POSTGRES_PASSWORD: dGVzdC1wb3N0Z3Jlcy1zZWNyZXQ=
