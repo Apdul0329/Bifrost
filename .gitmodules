@@ -1,0 +1,6 @@
+[submodule "Heimdall"]
+	path = Heimdall
+	url = https://github.com/Apdul0329/Heimdall.git
+[submodule "Woden"]
+	path = Woden
+	url = https://github.com/Apdul0329/Woden.git
